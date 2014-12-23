@@ -1,0 +1,54 @@
+{
+    "name": "testJSON",
+    "version": "0.0.1",
+    "items": [
+        { "id": 1, "campus": "Downriver", "2014": "", "2015": "", "2016": "", "2017": "", "2018": "", "2019": "", "2020": "", "2021": "", "2022": "" },
+        { "id": 2, "campus": "Downtown", "2014": "", "2015": "", "2016": "", "2017": "", "2018": "", "2019": "", "2020": "", "2021": "", "2022": "" },
+        { "id": 3, "campus": "Eastern", "2014": "", "2015": "", "2016": "", "2017": "", "2018": "", "2019": "", "2020": "", "2021": "", "2022": "" },
+        { "id": 4, "campus": "Northwest", "2014": "$3000", "2015": "$5000", "2016": "$10000", "2017": "-", "2018": "$15000", "2019": "$50000", "2020": "-", "2021": "$5000", "2022": "$10000" },
+        { "id": 5, "campus": "Western", "2014": "", "2015": "", "2016": "", "2017": "", "2018": "", "2019": "", "2020": "", "2021": "", "2022": "" },
+        { "id": 6, "campus": "University Center", "2014": "", "2015": "", "2016": "", "2017": "", "2018": "", "2019": "", "2020": "", "2021": "", "2022": "" }
+    ],
+    "attributes": [
+        {"Required": [
+            {"year":2014, "reserve_required_materials":"5000", "reserve_required_labor":"10000"},
+            {"year":2015, "reserve_required_materials":"6000", "reserve_required_labor":"7000"},
+            {"year":2016, "reserve_required_materials":"1000", "reserve_required_labor":"4000"},
+            {"year":2017, "reserve_required_materials":"10000", "reserve_required_labor":"18000"},
+            {"year":2018, "reserve_required_materials":"100", "reserve_required_labor":"300"},
+            {"year":2019, "reserve_required_materials":"100", "reserve_required_labor":"300"},
+            {"year":2020, "reserve_required_materials":"100", "reserve_required_labor":"300"}
+        ]},
+        {"balance": "50000"},
+        {"Projection": [
+            {"year":2014, "investment_yield":".04", "labor_inflation":"0.03", "material_inflation":"0.04"},
+            {"year":2015, "investment_yield":".04", "labor_inflation":"0.03", "material_inflation":"0.04"},
+            {"year":2016, "investment_yield":".04", "labor_inflation":"0.01", "material_inflation":"0.01"},
+            {"year":2017, "investment_yield":".04", "labor_inflation":"0.20", "material_inflation":"0.20"},
+            {"year":2018, "investment_yield":".04", "labor_inflation":"0.03", "material_inflation":"0.04"},
+            {"year":2019, "investment_yield":".04", "labor_inflation":"0.03", "material_inflation":"0.04"},
+            {"year":2020, "investment_yield":".04", "labor_inflation":"0.03", "material_inflation":"0.04"}
+        ]}
+    ],
+    "campus": [
+        { "y": 1500, "legend": "Lab Science", "text": "$1500"},
+        { "y": 2500, "legend": "Admin", "text": "$2500"},
+        { "y": 3000, "legend": "Welcome Center", "text": "$3000"},
+        { "y": 4000, "legend": "Health Science", "text": "$4000"},
+        { "y": 5000, "legend": "General Arts", "text": "$5000"}
+    ],
+    "reserves": [
+        { "value": 1, "y": 7000, "text": "Nov"},
+        { "value": 2, "y": 0, "text": "Dec"},
+        { "value": 3, "y": 0, "text": "Jan"},
+        { "value": 4, "y": 8000, "text": "Feb"},
+        { "value": 5, "y": 5000, "text": "Mar"},
+        { "value": 6, "y": 0, "text": "Apr"},
+        { "value": 7, "y": 5000, "text": "May"},
+        { "value": 8, "y": 0, "text": "Jun"},
+        { "value": 9, "y": 0, "text": "Jul"},
+        { "value": 10, "y": 5000, "text": "Aug"},
+        { "value": 11, "y": 10000, "text": "Sep"},
+        { "value": 12, "y": 5000, "text": "Oct"}
+    ]
+}

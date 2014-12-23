@@ -21,68 +21,64 @@ require([
     "dojo/data/ItemFileWriteStore",
     "dojox/charting/StoreSeries",
     "dojo/store/Observable",
+    "dojox/charting/DataChart",
     "dojo/domReady!"
-], function(Chart, Chart2D, Pie, Tooltip, MoveSlice, PlotKitGreen, Columns, Lines, Legend, lang, DataGrid, Memory, ObjectStore, request, ItemFileWriteStore, StoreSeries, Observable){
+], function(Chart, Chart2D, Pie, Tooltip, MoveSlice, PlotKitGreen, Columns, Lines, pLegend, lang, DataGrid, Memory, ObjectStore, request, ItemFileWriteStore, StoreSeries, Observable, DataChart){
 
-    campus = [
-        { y: 1500, legend: "Lab Science", text: "$1500"},
-        { y: 2500, legend: "Admin", text: "$2500"},
-        { y: 3000, legend: "Welcome Center", text: "$3000"},
-        { y: 4000, legend: "Health Science", text: "$4000"},
-        { y: 5000, legend: "General Arts", text: "$5000"}
-    ];
-    var pieChart = new Chart("pieChartNode", {
-        title: "Northwest Campus Capital Reserve Requirement",
-        titlePos: "top",
-        titleGap: 25,
-        titleFont: "normal normal normal 15pt Arial",
-        titleFontColor: "red"
+    var pieStore;
+    request.get("test.json",{
+        handleAs: "json"
+    }).then(function(data){
+        pieStore = new ObjectStore({ objectStore:new Memory({ data: data.campus }) });
+        this.pieChart(pieStore.objectStore.data);
     });
-    pieChart.setTheme(PlotKitGreen);
-    pieChart.addPlot("default", {
-        type: "Pie",
-        radius: 200,
-        fontColor: "#ff0000",
-        fontSize: 18,
-        labelOffset: 60
-    });
-    pieChart.addSeries("example", campus);
-    new MoveSlice(pieChart,"default");
-    new Tooltip(pieChart, "default", {
-        text: lang.hitch(this, function (o) {
-            return this.campus[o.index].legend
-        })
-    });
-    pieChart.render();
-    var legend = dijit.byId("Legend");
-    var Legend = new Legend({
-        chart: pieChart,
-        horizontal: false,
-        domNode: Legend,
-        theme: PlotKitGreen
-    }, "Legend");
+    pieChart = function(array) {
+        var pieChart = new Chart("pieChartNode", {
+            title: "Northwest Campus Capital Reserve Requirement",
+            titlePos: "top",
+            titleGap: 25,
+            titleFont: "normal normal normal 15pt Arial",
+            titleFontColor: "red"
+        });
+        pieChart.setTheme(PlotKitGreen);
+        pieChart.addPlot("default", {
+            type: "Pie",
+            radius: 200,
+            fontColor: "#ff0000",
+            fontSize: 18,
+            labelOffset: 60
+        });
+        pieChart.addSeries("example", array);
+        new MoveSlice(pieChart,"default");
+        new Tooltip(pieChart, "default", {
+            //text: this.array[o.index].legend
+            text: function(o) {
+                return array[o.index].legend
+            }
+        });
+        pieChart.render();
+        var Legend = new pLegend({
+            chart: pieChart,
+            horizontal: false,
+            domNode: Legend
+        }, "Legend");
+    };
 
 
-    reserves = [
-        { value: 1, y: 7000, text: "Nov"},
-        { value: 2, y: 0, text: "Dec"},
-        { value: 3, y: 0, text: "Jan"},
-        { value: 4, y: 8000, text: "Feb"},
-        { value: 5, y: 5000, text: "Mar"},
-        { value: 6, y: 0, text: "Apr"},
-        { value: 7, y: 5000, text: "May"},
-        { value: 8, y: 0, text: "Jun"},
-        { value: 9, y: 0, text: "Jul"},
-        { value: 10, y: 5000, text: "Aug"},
-        { value: 11, y: 10000, text: "Sep"},
-        { value: 12, y: 5000, text: "Oct"}
-    ];
-    var barStore;
+    var store = new ItemFileWriteStore({ url: "test.json" });
+    console.log(store);
+    chart = new DataChart("barChartNode", {
+        type: Columns,
+        scroll: true
+    });
+    chart.setStore(store, {id:"*"}, "2014");
+    //http://localhost/sampleproject/test.json
+    /*var barStore;
     request.get("test.json",{
         handleAs: "json"
     }).then(function(data){
         barStore = new ObjectStore({ objectStore:new Memory({ data: data.reserves }) });
-        this.barChart(barStore);
+        this.barChart(barStore.objectStore.data);
     });
     barChart = function(array) {
         var barChart = new Chart2D("barChartNode", {
@@ -128,64 +124,14 @@ require([
                 return "$" + value;
             }
         });
-        barChart.addSeries("sample", reserves);
+        barChart.addSeries("sample", array);
         new Tooltip(barChart, "default", {
             text: lang.hitch(this, function (o) {
-                return "$" + this.array[o.index].y
+                return "$" + array[o.index].y
             })
         });
         barChart.render();
-    };
-    /*var barChart = new Chart2D("barChartNode", {
-        title: "Capital Reserve Expenditures Prior 12 Months",
-        titlePos: "top",
-        titleGap: 25,
-        titleFont: "normal normal normal 15pt Arial",
-        titleFontColor: "red"
-    });
-    barChart.addPlot("default", {
-        type: "Columns",
-        tension: 3,
-        gap: 2
-    });
-    barChart.setTheme(PlotKitGreen);
-    barChart.addAxis("x", {
-        labels: [
-            { value: 0, text: ""},
-            { value: 1, text: reserves[0].text + "-14" },
-            { value: 2, text: reserves[1].text + "-14"},
-            { value: 3, text: reserves[2].text + "-14"},
-            { value: 4, text: reserves[3].text + "-14"},
-            { value: 5, text: reserves[4].text + "-14"},
-            { value: 6, text: reserves[5].text + "-14"},
-            { value: 7, text: reserves[6].text + "-14"},
-            { value: 8, text: reserves[7].text + "-14"},
-            { value: 9, text: reserves[8].text + "-14"},
-            { value: 10, text: reserves[9].text + "-14"},
-            { value: 11, text: reserves[10].text + "-14"},
-            { value: 12, text: reserves[11].text + "-14"},
-            { value: 13, text: "" }
-        ],
-        fixLower: "major",
-        fixUpper: "minor",
-        rotation: 50
-    });
-    barChart.addAxis("y", {
-        vertical: true,
-        fixLower: "major",
-        fixUpper: "major",
-        min: 0,
-        labelFunc: function(value) {
-            return "$" + value;
-        }
-    });
-    barChart.addSeries("sample", reserves);
-    new Tooltip(barChart, "default", {
-        text: lang.hitch(this, function (o) {
-            return "$" + this.reserves[o.index].y
-        })
-    });
-    barChart.render();*/
+    };*/
 
 
     expendituresT = Object();
@@ -202,7 +148,6 @@ require([
         expendituresT = dataStore.objectStore.data[2];
         requiredT = dataStore.objectStore.data[0];
         for (i = 0; i < requiredT.Required.length; i++) {
-            //console.log(requiredT.Required[i]);
             var reserveMaterials = Number(requiredT.Required[i].reserve_required_materials);
             var materialsInflation = Number(expendituresT.Projection[i].material_inflation);
             var reserveLabor = Number(requiredT.Required[i].reserve_required_labor);

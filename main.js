@@ -82,9 +82,61 @@ require([
         handleAs: "json"
     }).then(function(data){
         barStore = new ObjectStore({ objectStore:new Memory({ data: data.reserves }) });
-
+        this.barChart(barStore);
     });
-    var barChart = new Chart2D("barChartNode", {
+    barChart = function(array) {
+        var barChart = new Chart2D("barChartNode", {
+            title: "Capital Reserve Expenditures Prior 12 Months",
+            titlePos: "top",
+            titleGap: 25,
+            titleFont: "normal normal normal 15pt Arial",
+            titleFontColor: "red"
+        });
+        barChart.addPlot("default", {
+            type: "Columns",
+            tension: 3,
+            gap: 2
+        });
+        barChart.setTheme(PlotKitGreen);
+        barChart.addAxis("x", {
+            labels: [
+                { value: 0, text: ""},
+                { value: 1, text: array[0].text + "-14" },
+                { value: 2, text: array[1].text + "-14"},
+                { value: 3, text: array[2].text + "-14"},
+                { value: 4, text: array[3].text + "-14"},
+                { value: 5, text: array[4].text + "-14"},
+                { value: 6, text: array[5].text + "-14"},
+                { value: 7, text: array[6].text + "-14"},
+                { value: 8, text: array[7].text + "-14"},
+                { value: 9, text: array[8].text + "-14"},
+                { value: 10, text: array[9].text + "-14"},
+                { value: 11, text: array[10].text + "-14"},
+                { value: 12, text: array[11].text + "-14"},
+                { value: 13, text: "" }
+            ],
+            fixLower: "major",
+            fixUpper: "minor",
+            rotation: 50
+        });
+        barChart.addAxis("y", {
+            vertical: true,
+            fixLower: "major",
+            fixUpper: "major",
+            min: 0,
+            labelFunc: function(value) {
+                return "$" + value;
+            }
+        });
+        barChart.addSeries("sample", reserves);
+        new Tooltip(barChart, "default", {
+            text: lang.hitch(this, function (o) {
+                return "$" + this.array[o.index].y
+            })
+        });
+        barChart.render();
+    };
+    /*var barChart = new Chart2D("barChartNode", {
         title: "Capital Reserve Expenditures Prior 12 Months",
         titlePos: "top",
         titleGap: 25,
@@ -133,7 +185,7 @@ require([
             return "$" + this.reserves[o.index].y
         })
     });
-    barChart.render();
+    barChart.render();*/
 
 
     expendituresT = Object();
